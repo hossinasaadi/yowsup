@@ -10,15 +10,12 @@ class ResultGetPictureIqProtocolEntity(PictureIqProtocolEntity):
     '''
     def __init__(self, jid, pictureData, pictureId, preview = True, _id = None):
         super(ResultGetPictureIqProtocolEntity, self).__init__(jid, _id, "result")
-        self.setResultPictureProps(jid, pictureData, pictureId, preview)
-        
+        self.setResultPictureProps(pictureData, pictureId, preview)
 
-
-    def setResultPictureProps(self,jid , pictureData, pictureId, preview = True ):
+    def setResultPictureProps(self, pictureData, pictureId, preview = True):
         self.preview = preview
         self.pictureData = pictureData
         self.pictureId = pictureId
-        self.jid = jid
 
     def isPreview(self):
         return self.preview
@@ -28,9 +25,6 @@ class ResultGetPictureIqProtocolEntity(PictureIqProtocolEntity):
 
     def getPictureId(self):
         return self.pictureId
-
-    def getJid(self):
-        return self.jid
 
     def writeToFile(self, path):
         with open(path, "wb") as outFile:
@@ -47,5 +41,5 @@ class ResultGetPictureIqProtocolEntity(PictureIqProtocolEntity):
         entity = PictureIqProtocolEntity.fromProtocolTreeNode(node)
         entity.__class__ = ResultGetPictureIqProtocolEntity
         pictureNode = node.getChild("picture")
-        entity.setResultPictureProps(node.getAttributeValue("from"),pictureNode.getData(), pictureNode.getAttributeValue("id"), pictureNode.getAttributeValue("type") == "preview")
+        entity.setResultPictureProps(pictureNode.getData(), pictureNode.getAttributeValue("id"), pictureNode.getAttributeValue("type") == "preview")
         return entity
